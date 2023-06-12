@@ -1,5 +1,6 @@
 package com.alibaba.csp.sentinel.dashboard.rule.nacos.config;
 
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.GatewayFlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.DegradeRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
 import com.alibaba.csp.sentinel.datasource.Converter;
@@ -45,6 +46,25 @@ public class NacosConfig {
     @Bean
     public Converter<String,List<DegradeRuleEntity>> degradeRuleEntityDecoder() {
         return source -> JSON.parseArray(source, DegradeRuleEntity.class);
+    }
+
+    /**
+     * List<GatewayFlowRuleEntity> -> String
+     * @return String
+     */
+    @Bean
+    public Converter<List<GatewayFlowRuleEntity>, String> gatewayFlowRuleEntityEncoder() {
+        return source -> JSON.toJSONString(source.stream()
+                .map(GatewayFlowRuleEntity::toGatewayFlowRule).collect(Collectors.toList()), true);
+    }
+
+    /**
+     * String -> List<GatewayFlowRuleEntity>
+     * @return List<GatewayFlowRuleEntity>
+     */
+    @Bean
+    public Converter<String,List<GatewayFlowRuleEntity>> gatewayFlowRuleEntityDecoder() {
+        return source -> JSON.parseArray(source, GatewayFlowRuleEntity.class);
     }
 
     @Bean

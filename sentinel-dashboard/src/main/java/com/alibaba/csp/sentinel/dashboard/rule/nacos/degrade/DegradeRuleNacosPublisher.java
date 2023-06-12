@@ -33,12 +33,12 @@ public class DegradeRuleNacosPublisher implements DynamicRulePublisher<List<Degr
 
     @Override
     public void publish(String app, List<DegradeRuleEntity> rules) throws Exception {
-        log.info("推送降级规则信息至Nacos, AppName:{}, Rules:{}", app, rules);
         AssertUtil.notEmpty(app, "app name cannot be empty");
         if (rules == null) {
             return;
         }
         configService.publishConfig(app + NacosConfigConstant.DEGRADE_DATA_ID_POSTFIX,
                 nacosConfigProperties.getGroupId(), converter.convert(rules));
+        log.info("推送降级规则信息至Nacos, AppName:{}, Rules:{}", app, rules);
     }
 }

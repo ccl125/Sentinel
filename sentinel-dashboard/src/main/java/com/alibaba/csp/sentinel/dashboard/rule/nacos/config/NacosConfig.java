@@ -54,8 +54,7 @@ public class NacosConfig {
      */
     @Bean
     public Converter<List<GatewayFlowRuleEntity>, String> gatewayFlowRuleEntityEncoder() {
-        return source -> JSON.toJSONString(source.stream()
-                .map(GatewayFlowRuleEntity::toGatewayFlowRule).collect(Collectors.toList()), true);
+        return source -> JSON.toJSONString(source,true);
     }
 
     /**

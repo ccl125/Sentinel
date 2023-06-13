@@ -266,11 +266,6 @@ public class GatewayFlowRuleController {
             logger.error("add gateway flow rule error:", throwable);
             return Result.ofThrowable(-1, throwable);
         }
-
-        if (!publishRules(app, ip, port)) {
-            logger.warn("publish gateway flow rules fail after add");
-        }
-
         return Result.ofSuccess(entity);
     }
 
@@ -408,15 +403,13 @@ public class GatewayFlowRuleController {
 
         try {
             entity = repository.save(entity);
+            publishRulesV2(app);
+            logger.info("更新网关流控规则成功, app={}, ip={}, newRule={}",
+                    entity.getApp(), entity.getIp(), JSON.toJSONString(entity));
         } catch (Throwable throwable) {
             logger.error("update gateway flow rule error:", throwable);
             return Result.ofThrowable(-1, throwable);
         }
-
-        if (!publishRules(app, entity.getIp(), entity.getPort())) {
-            logger.warn("publish gateway flow rules fail after update");
-        }
-
         return Result.ofSuccess(entity);
     }
 
@@ -436,15 +429,12 @@ public class GatewayFlowRuleController {
 
         try {
             repository.delete(id);
+            publishRulesV2(oldEntity.getApp());
+            logger.info("删除网关流控规则成功, id={}", id);
         } catch (Throwable throwable) {
             logger.error("delete gateway flow rule error:", throwable);
             return Result.ofThrowable(-1, throwable);
         }
-
-        if (!publishRules(oldEntity.getApp(), oldEntity.getIp(), oldEntity.getPort())) {
-            logger.warn("publish gateway flow rules fail after delete");
-        }
-
         return Result.ofSuccess(id);
     }
 

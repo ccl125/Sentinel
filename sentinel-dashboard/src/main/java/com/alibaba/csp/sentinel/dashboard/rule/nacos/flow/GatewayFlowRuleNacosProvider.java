@@ -44,7 +44,7 @@ public class GatewayFlowRuleNacosProvider implements DynamicRuleProvider<List<Ga
 
     @Override
     public List<GatewayFlowRuleEntity> getRules(String appName) throws Exception {
-        String rules = configService.getConfig(appName + NacosConfigConstant.FLOW_DATA_ID_POSTFIX,
+        String rules = configService.getConfig(appName + NacosConfigConstant.FLOW_DATA_ID_POSTFIX + NacosConfigConstant.FILE_POSTFIX,
                 NacosConfigConstant.GROUP_ID, 3000);
         log.info("从Nacos中拉取限流规则信息:{}", rules);
         return StringUtil.isEmpty(rules) ? new ArrayList<>() : converter.convert(rules);

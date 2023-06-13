@@ -19,5 +19,9 @@ public class NacosConfigConstant {
      * Nacos Group
      */
     public static final String GROUP_ID = "DEFAULT_GROUP";
+    /**
+     * Nacos file extension
+     */
+    public static final String FILE_POSTFIX = ".json";
 
 }
